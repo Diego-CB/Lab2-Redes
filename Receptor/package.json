@@ -1,0 +1,20 @@
+{
+  "name": "receptor",
+  "version": "1.0.0",
+  "description": "Receptor de tramas binarias implementando algoritmos CRC-32 y Hamming",
+  "main": "index.js",
+  "scripts": {
+    "crc": "node ./CRC-32.js",
+    "ham": "node ./hamming.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Diego-CB/Lab2-Redes.git"
+  },
+  "author": "Diego Cordova - Andrea Lam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Diego-CB/Lab2-Redes/issues"
+  },
+  "homepage": "https://github.com/Diego-CB/Lab2-Redes#readme"
+}
