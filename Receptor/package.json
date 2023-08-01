@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Diego-CB/Lab2-Redes/issues"
   },
-  "homepage": "https://github.com/Diego-CB/Lab2-Redes#readme"
+  "homepage": "https://github.com/Diego-CB/Lab2-Redes#readme",
+  "dependencies": {
+    "slice": "^1.0.0"
+  }
 }
