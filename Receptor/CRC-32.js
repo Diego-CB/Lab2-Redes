@@ -1,4 +1,4 @@
-const slice = require('slice')
+require('slice')
 
 /**
  * Operates xor with a given trama and a polinom
