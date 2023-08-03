@@ -7,10 +7,7 @@ P2_LIST = [4, 5, 6, 7]
 const get_parity = (trama, list) => {
     const subtrama = list.map(index => trama[index-1])
     const bit = subtrama.filter(b => b == 1).length % 2 == 0
-    if (bit) {
-        return 0
-    }
-    return 1
+    return bit ? 0 : 1
 }
 
 const hamming = trama => {

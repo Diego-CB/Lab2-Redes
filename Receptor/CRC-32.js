@@ -71,6 +71,7 @@ const crc = (trama, polinom) => {
     const founded_errors = process_trama(trama, polinom)
     if (founded_errors) {
         console.log('> Se encontraron errores en la trama')
+        console.log('> La trama se descarta')
     } else {
         console.log('> No se encontraron errores en la trama')
     }
