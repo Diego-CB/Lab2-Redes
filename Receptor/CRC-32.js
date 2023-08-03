@@ -89,38 +89,46 @@ const crc = (trama, polinom) => {
     }
 }
 
-// Main
-
-// tramas correctas
+console.log('---- Pruebas con tramas correctas ----')
 Trama = '111100001010'
 Polinomio = '10011'
+crc(Trama, Polinomio)
 
 Trama = '100111101'
 Polinomio = '10101'
+crc(Trama, Polinomio)
 
 Trama = '110101011'
 Polinomio = '1001'
+crc(Trama, Polinomio)
 
-
-Trama = '01101010111101111011111100101010'
-Polinomio = '100000100110000010001110110110111'
-
-
-// con error
+console.log('---- Pruebas con tramas con error ----')
 Trama = '10100111011'
 Polinomio = '1101'
+crc(Trama, Polinomio)
 
 Trama = '10100111011'
 Polinomio = '1101'
+crc(Trama, Polinomio)
 
 Trama = '11010110101011010000000000000000'
 Polinomio = '100000100110000010001110110110111'
+crc(Trama, Polinomio)
 
-// pruebas con 2 bits
+console.log('---- Pruebas con 2 errores ----')
 Trama = '110100001110'
 Polinomio = '10011'
+crc(Trama, Polinomio)
 
 Trama = '100101001'
 Polinomio = '10101'
+crc(Trama, Polinomio)
 
+console.log('---- Pruebas con cambios sin errores ----')
+Trama = '00100111000'
+Polinomio = '1101'
+crc(Trama, Polinomio)
+
+Trama = '101100001000'
+Polinomio = '10011'
 crc(Trama, Polinomio)

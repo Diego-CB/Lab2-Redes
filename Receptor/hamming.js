@@ -88,23 +88,39 @@ const tramas_errores = [
     '0010010',
 ]
 
-// console.log('---- Pruebas con tramas correctas ----')
-// tramas_correctas.map(trama => {
-//     hamming(trama)
-//     console.log()
-// })
+console.log('---- Pruebas con tramas correctas ----')
+tramas_correctas.map(trama => {
+    hamming(trama)
+    console.log()
+})
 
-// console.log('---- Pruebas con tramas con error ----')
-// tramas_errores.map(trama => {
-//     hamming(trama)
-//     console.log()
-// })
+console.log('---- Pruebas con tramas con error ----')
+tramas_errores.map(trama => {
+    hamming(trama)
+    console.log()
+})
 
-hamming(
-    '0100011' +
-    '1001110' +
-    '0010010'
-)
+const tramas_2_errores = [
+    '0111011' + '0100011',
+    '1001000' + '1001110',
+]
 
-// hamming('1101010')
-// hamming('110101111')
+console.log('---- Pruebas con 2 errores ----')
+tramas_2_errores.map(trama => {
+    hamming(trama)
+    console.log()
+})
+t = '0110011'
+t2 = '1001100'
+
+const tramas_2_correctas = [
+    '1010010',
+    '1100110',
+]
+
+console.log('---- Pruebas con cambios sin errores ----')
+tramas_2_correctas.map(trama => {
+    hamming(trama)
+    console.log()
+})
+
