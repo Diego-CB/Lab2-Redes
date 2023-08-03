@@ -1,4 +1,5 @@
 require('slice')
+const { string_to_bits } = require('./util.js')
 
 /**
  * Operates xor with a given trama and a polinom
@@ -28,17 +29,6 @@ const get_usable_trama = trama => {
     }
 
     return [usable, operate]
-}
-
-/**
- * Converst string to array of ints
- * @param {string} trama
- * @returns the trama in an array of ints
- */
-const string_to_bits = trama => {
-    trama = trama.split('')
-    trama = trama.map(char => parseInt(char))
-    return trama
 }
 
 /**
@@ -77,9 +67,16 @@ const process_trama = (trama, polinom) => {
     return errors_founded
 }
 
-trama = [1, 1, 0, 1, 0, 1, 0, 1, 1]
+const crc = (trama, polinom) => {
+    const founded_errors = process_trama(trama, polinom)
+    if (founded_errors) {
+        console.log('> Se encontraron errores en la trama')
+    } else {
+        console.log('> No se encontraron errores en la trama')
+    }
+}
+
+// Main
 trama = '110101011'
-polinom = [1, 0, 0, 1]
 polinom = '1001'
-const result = process_trama(trama, polinom)
-console.log(result)
+crc(trama, polinom)
