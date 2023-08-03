@@ -1,6 +1,8 @@
 require('slice')
 const { string_to_bits } = require('./util.js')
 
+const print = o => console.log()
+
 /**
  * Operates xor with a given trama and a polinom
  * @param {Array[int]} trama 
@@ -43,6 +45,10 @@ const process_trama = (trama, polinom) => {
     let operate_trama = trama.slice(0, polinom.length)
     trama = trama.slice(polinom.length, trama.length)
     trama = trama.reverse()
+
+    if (trama.length == 0) {
+        out_trama = trama_xor(operate_trama, polinom)
+    }
     
     while (trama.length > 0) {
         let result = trama_xor(operate_trama, polinom)
@@ -57,17 +63,23 @@ const process_trama = (trama, polinom) => {
         out_trama = [...out_trama, ...result[0]]
         operate_trama = result[1]
 
-        while (operate_trama.length < polinom.length) {
-            operate_trama.push(trama.pop())
+        if (trama.length + operate_trama.length < polinom.length) {
+            out_trama = [...out_trama, ...trama]
+            trama = []
         }
 
+        while (operate_trama.length < polinom.length && trama.length > 0) {
+            operate_trama.push(trama.pop())
+        }
     }
 
     errors_founded = out_trama.includes(1)
+    // console.log(out_trama)
     return errors_founded
 }
 
 const crc = (trama, polinom) => {
+    console.log('Trama inicial:', trama)
     const founded_errors = process_trama(trama, polinom)
     if (founded_errors) {
         console.log('> Se encontraron errores en la trama')
@@ -78,6 +90,37 @@ const crc = (trama, polinom) => {
 }
 
 // Main
-trama = '110101011'
-polinom = '1001'
-crc(trama, polinom)
+
+// tramas correctas
+Trama = '111100001010'
+Polinomio = '10011'
+
+Trama = '100111101'
+Polinomio = '10101'
+
+Trama = '110101011'
+Polinomio = '1001'
+
+
+Trama = '01101010111101111011111100101010'
+Polinomio = '100000100110000010001110110110111'
+
+
+// con error
+Trama = '10100111011'
+Polinomio = '1101'
+
+Trama = '10100111011'
+Polinomio = '1101'
+
+Trama = '11010110101011010000000000000000'
+Polinomio = '100000100110000010001110110110111'
+
+// pruebas con 2 bits
+Trama = '110100001110'
+Polinomio = '10011'
+
+Trama = '100101001'
+Polinomio = '10101'
+
+crc(Trama, Polinomio)

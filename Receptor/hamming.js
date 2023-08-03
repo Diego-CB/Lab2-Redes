@@ -34,8 +34,6 @@ const process_hamming = trama => {
 }
 
 const hamming = trama => {
-    console.log('Trama inicial:', trama)
-
     // Get subtramas
     let sub_tramas = []
     
@@ -44,10 +42,13 @@ const hamming = trama => {
         trama = trama.length > 0 ? trama.slice(7, trama.length) : trama
     }
 
+    // Print initial trama
+    console.log('Trama inicial:', sub_tramas)
+    
+    // Make corrections in sub tramas
     sub_tramas = sub_tramas.reverse()
     let error_founded = false
 
-    // Make corrections in sub tramas
     const corrections = sub_tramas.map((msg, index) => {
         const process_result = process_hamming(msg)
         const actual = process_result[0]
@@ -59,7 +60,7 @@ const hamming = trama => {
                 '> Se encontraron errores en el bit:',
                 dirty_bit + ((index) * 7),
             )
-            console.log(msg)
+            // console.log(msg)
         }
         return actual
     })
@@ -69,6 +70,7 @@ const hamming = trama => {
         let trama_str = corrections.reduce((acc, trama) => [...trama, ' ', ...acc], [])
         trama_str = trama_str.reduce((acc, bit) => acc + bit.toString(), '')
         console.log('> trama correcta:', trama_str)
+
     } else {
         console.log('> No se detectaron errores en la trama')
     }
@@ -103,3 +105,6 @@ hamming(
     '1001110' +
     '0010010'
 )
+
+// hamming('1101010')
+// hamming('110101111')
