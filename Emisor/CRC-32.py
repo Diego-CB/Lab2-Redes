@@ -42,7 +42,7 @@ def main():
     print("Trama con CRC-32:", trama_con_crc)
 
     # Simulando la recepción de la trama y verificación de errores
-    simulacion(trama)
+    #simulacion(trama)
     
 
 if __name__ == "__main__":
