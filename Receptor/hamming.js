@@ -40,7 +40,10 @@ const hamming = trama => {
     }
 }
 
-trama = '0110001'
 trama = '1001100'
 trama = '1011100'
+trama = '0110001'
+trama = '1000110'
+trama = '1000110'
+trama = '0110001'
 result = hamming(trama)
