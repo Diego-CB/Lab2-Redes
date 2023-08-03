@@ -1,7 +1,7 @@
 # Lab2-Redes
 
 Andrea Lam 20102
-Diego Cordova 20
+Diego Cordova 20212
 
 Para poder utilizar el lab se necesita descargar estas librerias:
 pip install crcmod
