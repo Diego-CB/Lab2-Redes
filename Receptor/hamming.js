@@ -1,4 +1,4 @@
-const { string_to_bits} = require('./util')
+const { string_to_bits } = require('./util')
 
 P0_LIST = [1, 3, 5, 7]
 P1_LIST = [2, 3, 6, 7]
@@ -14,7 +14,7 @@ const get_parity = (trama, list) => {
 }
 
 const hamming = trama => {
-    // preprocess trama
+    // pre-process trama
     console.log('Trama inicial:', trama)
     trama = string_to_bits(trama)
     trama = trama.reverse()
@@ -25,22 +25,22 @@ const hamming = trama => {
     const bit3 = get_parity(trama, P2_LIST)
 
     // convert to decimal
-    let error_index = bit1.toString() + bit2.toString() + bit3.toString()
-    error_index = parseInt(error_index, 2)
+    const dirty_bit = parseInt(bit1.toString() + bit2.toString() + bit3.toString(), 2)
     
     if (dirty_bit > 0) {
         // Error Correction
+        trama[dirty_bit - 1] = (trama[dirty_bit - 1] === 1) ? 0 : 1
+        trama = trama.reduce((acc, bit) =>  bit.toString() + acc, '')
+
+        // Print
         console.log('Se encontraron errores en el bit:', dirty_bit)
-        let correct_trama = trama
-        correct_trama[dirty_bit - 1] = (correct_trama[dirty_bit - 1] === 1) ? 0 : 1
-        correct_trama = correct_trama.reduce((acc, bit) =>  bit.toString() + acc, '')
-        console.log('Trama correcta:', correct_trama)
+        console.log('Trama correcta:', trama)
     } else {
         console.log('No se encontraron errores en la trama')
     }
 }
 
 trama = '0110001'
-trama = '1011100'
 trama = '1001100'
+trama = '1011100'
 result = hamming(trama)
