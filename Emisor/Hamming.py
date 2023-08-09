@@ -1,26 +1,29 @@
+from functools import reduce
+
 #CORRECCION DE ERRORES HAMMING 
+P0_LIST = [2, 4, 6]
+P1_LIST = [2, 5, 6]
+P2_LIST = [4, 5, 6]
 
-def get_parity_bit(trama, index):
-    subtrama = [trama[i] for i in range(len(trama)) if (i + 1) & (1 << index)]
-    return sum(subtrama) % 2
+def get_trama_parity(trama:list) -> list[int|None]:
+    return [
+        None if i in [0, 1, 3] else trama.pop(0)
+            for i in range(7)
+    ]
 
-def hamming_encode(trama):
-    n = len(trama)
-    m = 0
-    while 2 ** m < n + m + 1:
-        m += 1
+def get_parity(p_list: list[int], trama: list[int|None]) -> int:
+    bit_map = [trama[i] for i in p_list]
+    print(bit_map.count(1))
+    return 0 if bit_map.count(1) % 2 == 0 else 1
 
-    mensaje_codificado = [0] * (n + m)
+def hamming_encode(trama: list[int]) -> str:
+    trama = get_trama_parity(trama)
 
-    j = 0
-    for i in range(1, n + m + 1):
-        if i == 2 ** j:
-            mensaje_codificado[i - 1] = get_parity_bit(trama + mensaje_codificado, j)
-            j += 1
-        else:
-            mensaje_codificado[i - 1] = trama.pop(0)
-
-    return "".join(str(bit) for bit in mensaje_codificado)
+    trama[0] = get_parity(P0_LIST, trama)
+    trama[1] = get_parity(P1_LIST, trama)
+    trama[3] = get_parity(P2_LIST, trama)
+    
+    return reduce((lambda acc, val: str(val) + str(acc)), trama)
 
 
 def main():
