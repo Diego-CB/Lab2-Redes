@@ -13,7 +13,6 @@ def get_trama_parity(trama:list) -> list[int|None]:
 
 def get_parity(p_list: list[int], trama: list[int|None]) -> int:
     bit_map = [trama[i] for i in p_list]
-    print(bit_map.count(1))
     return 0 if bit_map.count(1) % 2 == 0 else 1
 
 def hamming_encode(trama: list[int]) -> str:
