@@ -26,4 +26,4 @@ def add_ruido(trama:str) -> str:
 
         new_trama += actual_bit
 
-    return trama, cambios
+    return new_trama, cambios
