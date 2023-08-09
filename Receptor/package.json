@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/Diego-CB/Lab2-Redes#readme",
   "dependencies": {
-    "slice": "^1.0.0"
+    "coffeescript": "^2.7.0",
+    "net": "^1.0.2",
+    "path": "^0.12.7",
+    "slice": "^0.0.5"
   }
 }

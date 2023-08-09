@@ -1,5 +1,4 @@
-require('slice')
-const { string_to_bits } = require('./util')
+const { string_to_bits, print, binaryToString } = require('./util')
 
 P0_LIST = [1, 3, 5, 7]
 P1_LIST = [2, 3, 6, 7]
@@ -74,53 +73,40 @@ const hamming = trama => {
     } else {
         console.log('> No se detectaron errores en la trama')
     }
+    return corrections
 }
 
-const tramas_correctas = [
-    '0110011',
-    '1001100',
-    '1010010',
-]
 
-const tramas_errores = [
-    '0100011',
-    '1001110',
-    '0010010',
-]
 
-console.log('---- Pruebas con tramas correctas ----')
-tramas_correctas.map(trama => {
-    hamming(trama)
-    console.log()
+// Code below based on https://www.youtube.com/watch?v=LFU7gJAOegA
+var net = require('net')
+const HOST = "127.0.0.1"  // IP, capa de Red. 127.0.0.1 es localhost
+const PORT = 65432        // Puerto, capa de Transporte        
+
+const server = net.createServer()
+
+server.listen(PORT, () => {
+    print(`server listening on port ${server.address().port}`)
 })
 
-console.log('---- Pruebas con tramas con error ----')
-tramas_errores.map(trama => {
-    hamming(trama)
-    console.log()
+server.on('connection', socket => {
+    socket.on('data', data => {
+        print(`trama recibida: ${data}`)
+        // const data_str = data.map(value => value == 49 ? 1 : 0)
+        const data_str = data.toString()
+        let trama = hamming(data_str)
+        print(trama)
+        trama = trama.map(sub => {
+            return [sub[2], sub[4], sub[5], sub[6]].reverse()
+        }).reverse()
+        print(trama)
+    })
+
+    socket.on('close', () => {
+        print('Comunicacion finalizada')
+    })
+    
+    socket.on('error', err => {
+        print(err.message)
+    })
 })
-
-const tramas_2_errores = [
-    '0111011' + '0100011',
-    '1001000' + '1001110',
-]
-
-console.log('---- Pruebas con 2 errores ----')
-tramas_2_errores.map(trama => {
-    hamming(trama)
-    console.log()
-})
-t = '0110011'
-t2 = '1001100'
-
-const tramas_2_correctas = [
-    '1010010',
-    '1100110',
-]
-
-console.log('---- Pruebas con cambios sin errores ----')
-tramas_2_correctas.map(trama => {
-    hamming(trama)
-    console.log()
-})
-

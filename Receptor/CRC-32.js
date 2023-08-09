@@ -1,7 +1,6 @@
 require('slice')
-const { string_to_bits } = require('./util.js')
+const { string_to_bits, print } = require('./util.js')
 
-const print = o => console.log()
 
 /**
  * Operates xor with a given trama and a polinom
