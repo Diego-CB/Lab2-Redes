@@ -21,7 +21,7 @@ def add_ruido(trama:str) -> str:
         actual_bit = trama[i]
 
         if random.random() <= 0.01:
-            actual_bit = '0' if trama[i] == '1' else '1'
+            actual_bit = '0' if actual_bit == '1' else '1'
             cambios += 1
 
         new_trama += actual_bit
