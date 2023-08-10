@@ -1,5 +1,5 @@
 require('slice')
-const { string_to_bits, print } = require('./util.js')
+const { string_to_bits, print, binaryToString } = require('./util')
 
 
 /**
@@ -88,46 +88,53 @@ const crc = (trama, polinom) => {
     }
 }
 
-console.log('---- Pruebas con tramas correctas ----')
-Trama = '111100001010'
-Polinomio = '10011'
-crc(Trama, Polinomio)
+// Code below based on https://www.youtube.com/watch?v=LFU7gJAOegA
+var net = require('net')
+const HOST = "127.0.0.1"  // IP, capa de Red. 127.0.0.1 es localhost
+const PORT = 65432        // Puerto, capa de Transporte        
 
-Trama = '100111101'
-Polinomio = '10101'
-crc(Trama, Polinomio)
+const server = net.createServer()
 
-Trama = '110101011'
-Polinomio = '1001'
-crc(Trama, Polinomio)
+server.listen(PORT, () => {
+    print(`server listening on port ${server.address().port}`)
+})
 
-console.log('---- Pruebas con tramas con error ----')
-Trama = '10100111011'
-Polinomio = '1101'
-crc(Trama, Polinomio)
+server.on('connection', socket => {
+    print('> conexion a socket iniciada')
+    socket.on('data', data => {
+        // print(`trama recibida: ${data}`)
 
-Trama = '10100111011'
-Polinomio = '1101'
-crc(Trama, Polinomio)
+        // Capa de enlace:
+        const data_str = data.toString()
+        let trama = process_trama(data_str)
+        trama = trama.map(sub => {
+            return [sub[2], sub[4], sub[5], sub[6]].reverse()
+        }).reverse()
 
-Trama = '11010110101011010000000000000000'
-Polinomio = '100000100110000010001110110110111'
-crc(Trama, Polinomio)
+        // Capa de presentacion: Convertir a chars
+        let ascii_chars = []
+        
+        for (let index = 0; index < trama.length; index += 2) {
+            ascii_chars.push([...trama[index], ...trama[index+1]])
+        }
 
-console.log('---- Pruebas con 2 errores ----')
-Trama = '110100001110'
-Polinomio = '10011'
-crc(Trama, Polinomio)
+        let chars = ascii_chars.map(ascii => ascii.reduce(
+            (acc, va) => acc.toString() + va.toString()),
+            ''
+        )
+        chars = chars.map(ascii => binaryToString(ascii))
+        chars = chars.reduce((acc, val) => acc + val, '')
 
-Trama = '100101001'
-Polinomio = '10101'
-crc(Trama, Polinomio)
+        // Capa de presentacion: Imprimir mensaje y devolver resultado
+        // console.log('recibido: ', chars)
+        socket.write(chars)
+    })
 
-console.log('---- Pruebas con cambios sin errores ----')
-Trama = '00100111000'
-Polinomio = '1101'
-crc(Trama, Polinomio)
-
-Trama = '101100001000'
-Polinomio = '10011'
-crc(Trama, Polinomio)
+    socket.on('close', () => {
+        print('> Comunicacion finalizada')
+    })
+    
+    socket.on('error', err => {
+        print(err.message)
+    })
+})
