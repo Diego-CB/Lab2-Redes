@@ -55,11 +55,6 @@ const hamming = trama => {
 
         if (dirty_bit > 0) {
             error_founded = true
-            console.log(
-                '> Se encontraron errores en el bit:',
-                dirty_bit + ((index) * 7),
-            )
-            // console.log(msg)
         }
         return actual
     })
@@ -70,9 +65,7 @@ const hamming = trama => {
         trama_str = trama_str.reduce((acc, bit) => acc + bit.toString(), '')
         // console.log('> trama correcta:', trama_str)
 
-    } else {
-        console.log('> No se detectaron errores en la trama')
-    }
+    } 
     return corrections
 }
 
@@ -88,6 +81,7 @@ server.listen(PORT, () => {
 })
 
 server.on('connection', socket => {
+    print('> conexion a socket iniciada')
     socket.on('data', data => {
         // print(`trama recibida: ${data}`)
 
@@ -113,12 +107,12 @@ server.on('connection', socket => {
         chars = chars.reduce((acc, val) => acc + val, '')
 
         // Capa de presentacion: Imprimir mensaje y devolver resultado
-        console.log('recibido: ', chars)
+        // console.log('recibido: ', chars)
         socket.write(chars)
     })
 
     socket.on('close', () => {
-        print('Comunicacion finalizada')
+        print('> Comunicacion finalizada')
     })
     
     socket.on('error', err => {

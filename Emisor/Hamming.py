@@ -91,12 +91,10 @@ if __name__ == "__main__":
     
     s.connect((HOST, PORT))
 
-    tests:list = []
-    test_num = 10
-
     num_exitos = 0
     num_fracasos = 0
 
+    print('---- Iniciando pruebas ----')
     for i in range(1000):
         for msg_input in pruebas:
             # Aplicar arquitectura de capas
@@ -113,14 +111,13 @@ if __name__ == "__main__":
             else:
                 num_fracasos += 1
 
-        print(f'>{1000 * (i + 1)} pruebas realizadas')
+        if 100 * (i + 1) % 10000 == 0:
+            print(f'> {100 * (i + 1)} pruebas realizadas')
 
-    print('Exitos:', num_exitos)
+    print('\nExitos:', num_exitos)
     print('fracasos:', num_fracasos)
     porcentaje = (num_exitos / 100000) * 100
+    porcentaje = round(porcentaje, 2)
     print(f'precision: {porcentaje}%')
     s.close()
-
-    print(tests)
-
 
