@@ -1,3 +1,4 @@
+from functools import reduce
 import crcmod.predefined
 import util as u
 
@@ -52,7 +53,64 @@ def main():
     print("")
     # Simulando la recepción de la trama y verificación de errores
     #simulacion(trama)
+
+def layer_implementation(msg_input) -> str:
+
+    # Capa de presentacion (encoding)
+    trama = reduce(
+        (lambda acc, val: acc + val),
+        [u.char_to_extended_ascii_bits(char) for char in msg_input]
+    )
+
+    # Capa de Enlace (hamming 7 4 implementation)
+    encoded_trama, encoded_print = CRC32(trama)
     
+    # Capa de ruido
+    trama_ruido, cambios = u.add_ruido(encoded_trama)
+    # print('> se hicieron', cambios, 'cambios (ruido)')
+    
+    return trama_ruido 
 
 if __name__ == "__main__":
-    main()
+    # Code for socket connection below based on https://www.youtube.com/watch?v=nJYp3_X_p6c
+    # and the examples seen in class
+    import socket
+    from pruebas import pruebas
+    s = socket.socket()
+
+        
+    HOST = "127.0.0.1"  # IP, capa de Red. 127.0.0.1 es localhost
+    PORT = 65432        # Puerto, capa de Transporte        
+    
+    s.connect((HOST, PORT))
+
+    num_exitos = 0
+    num_fracasos = 0
+    
+    print('---- Iniciando pruebas ----')
+    for i in range(1000):
+        for msg_input in pruebas:
+            # Aplicar arquitectura de capas
+            # msg_input = input("Ingrese un mensaje a enviar: ")
+            trama = layer_implementation(msg_input)
+
+            # Enviar trama por socket
+            s.send(trama.encode())
+            # print('Trama enviada correctamente')
+            response = s.recv(1024).decode('utf-8')
+            # print('response: ', response)
+            if response == msg_input:
+                num_exitos += 1
+            else:
+                num_fracasos += 1
+
+        if 100 * (i + 1) % 10000 == 0:
+            print(f'> {100 * (i + 1)} pruebas realizadas')
+
+    print('\nExitos:', num_exitos)
+    print('fracasos:', num_fracasos)
+    porcentaje = (num_exitos / 100000) * 100
+    porcentaje = round(porcentaje, 2)
+    print(f'precision: {porcentaje}%')
+    s.close()
+    #main()
