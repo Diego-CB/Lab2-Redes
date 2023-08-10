@@ -59,16 +59,13 @@ def process_hamming(trama:str) -> str:
     return mensaje, mensaje_devided
 
 
-def layer_implementation() -> str:
-    # Capa de aplicacion
-    msg_input = input("Ingrese un mensaje a enviar: ")
+def layer_implementation(msg_input) -> str:
 
     # Capa de presentacion (encoding)
     trama = reduce(
         (lambda acc, val: acc + val),
         [char_to_extended_ascii_bits(char) for char in msg_input]
     )
-    print(trama)
 
     # Capa de Enlace (hamming 7 4 implementation)
     encoded_trama, encoded_print = process_hamming(trama)
@@ -83,20 +80,32 @@ if __name__ == "__main__":
     # main()
     # Code below based on https://www.youtube.com/watch?v=nJYp3_X_p6c
     import socket
-    s = socket.socket()        
+    s = socket.socket()
+
         
     HOST = "127.0.0.1"  # IP, capa de Red. 127.0.0.1 es localhost
     PORT = 65432        # Puerto, capa de Transporte        
     
     s.connect((HOST, PORT))
 
-    # Aplicar arquitectura de capas
-    trama = layer_implementation()
-    print(trama)
+    tests:list = []
+    test_num = 10
 
-    # Enviar trama por socket
-    s.send(trama.encode())
-    print('Trama enviada correctamente')
+    for _ in range(test_num):
+        # Aplicar arquitectura de capas
+        # msg_input = input("Ingrese un mensaje a enviar: ")
+        msg_input = 'hola mundo'
+        trama = layer_implementation(msg_input)
+
+        # Enviar trama por socket
+        s.send(trama.encode())
+        print('Trama enviada correctamente')
+        response = s.recv(1024).decode('utf-8')
+        print('response: ', response)
+
+        tests.append(response == msg_input)
     s.close()
+
+    print(tests)
 
 

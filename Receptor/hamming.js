@@ -42,7 +42,7 @@ const hamming = trama => {
     }
 
     // Print initial trama
-    console.log('Trama inicial:', sub_tramas)
+    // console.log('Trama inicial:', sub_tramas)
     
     // Make corrections in sub tramas
     sub_tramas = sub_tramas.reverse()
@@ -68,15 +68,13 @@ const hamming = trama => {
     if (error_founded) {
         let trama_str = corrections.reduce((acc, trama) => [...trama, ' ', ...acc], [])
         trama_str = trama_str.reduce((acc, bit) => acc + bit.toString(), '')
-        console.log('> trama correcta:', trama_str)
+        // console.log('> trama correcta:', trama_str)
 
     } else {
         console.log('> No se detectaron errores en la trama')
     }
     return corrections
 }
-
-
 
 // Code below based on https://www.youtube.com/watch?v=LFU7gJAOegA
 var net = require('net')
@@ -91,14 +89,16 @@ server.listen(PORT, () => {
 
 server.on('connection', socket => {
     socket.on('data', data => {
-        print(`trama recibida: ${data}`)
-        // const data_str = data.map(value => value == 49 ? 1 : 0)
+        // print(`trama recibida: ${data}`)
+
+        // Capa de enlace: Decodificar hamming 7-4
         const data_str = data.toString()
         let trama = hamming(data_str)
         trama = trama.map(sub => {
             return [sub[2], sub[4], sub[5], sub[6]].reverse()
         }).reverse()
 
+        // Capa de presentacion: Convertir a chars
         let ascii_chars = []
         
         for (let index = 0; index < trama.length; index += 2) {
@@ -110,8 +110,11 @@ server.on('connection', socket => {
             ''
         )
         chars = chars.map(ascii => binaryToString(ascii))
+        chars = chars.reduce((acc, val) => acc + val, '')
 
-        print(chars)
+        // Capa de presentacion: Imprimir mensaje y devolver resultado
+        console.log('recibido: ', chars)
+        socket.write(chars)
     })
 
     socket.on('close', () => {
