@@ -1,4 +1,5 @@
 import crcmod.predefined
+import util as u
 
 def CRC32(trama):
     # Polinomio estándar para CRC-32
@@ -31,16 +32,24 @@ def simulacion(trama):
         print("Se detectaron errores en la trama.")
     
 def main():
-    trama = input("Ingrese la trama en binario: ")
-
-    # Calcula el CRC-32 de la trama original
-    crc_calculado = CRC32(trama)
-
-    # Concatena el CRC-32 calculado con la trama original
-    trama_con_crc = trama + crc_calculado
-
+    #APLICACION: Solicitar mensaje
+    trama = input("Ingrese el texto a enviar: ")
+    print("Mensaje a enviar: "+trama)
+    print("")
+    #PRESENTACION: Codificar mensaje
+    nueva_trama = u.char_to_extended_ascii_bits(trama)
+    print("La trama en ascii: "+nueva_trama)
+    print("")
+    
+    #ENLACE: Calcular integridad 
+    crc_calculado = CRC32(nueva_trama)
+    trama_con_crc = nueva_trama + crc_calculado
     print("Trama con CRC-32:", trama_con_crc)
-
+    print("")
+    #RUIDO
+    trama_final = u.add_ruido(trama_con_crc)
+    print("La trama con ruido: "+ trama_final)
+    print("")
     # Simulando la recepción de la trama y verificación de errores
     #simulacion(trama)
     
