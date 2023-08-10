@@ -95,11 +95,23 @@ server.on('connection', socket => {
         // const data_str = data.map(value => value == 49 ? 1 : 0)
         const data_str = data.toString()
         let trama = hamming(data_str)
-        print(trama)
         trama = trama.map(sub => {
             return [sub[2], sub[4], sub[5], sub[6]].reverse()
         }).reverse()
-        print(trama)
+
+        let ascii_chars = []
+        
+        for (let index = 0; index < trama.length; index += 2) {
+            ascii_chars.push([...trama[index], ...trama[index+1]])
+        }
+
+        let chars = ascii_chars.map(ascii => ascii.reduce(
+            (acc, va) => acc.toString() + va.toString()),
+            ''
+        )
+        chars = chars.map(ascii => binaryToString(ascii))
+
+        print(chars)
     })
 
     socket.on('close', () => {
