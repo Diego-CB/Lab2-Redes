@@ -72,14 +72,17 @@ def layer_implementation(msg_input) -> str:
     
     # Capa de ruido
     trama_ruido, cambios = add_ruido(encoded_trama)
-    print('> se hicieron', cambios, 'cambios (ruido)')
+    # print('> se hicieron', cambios, 'cambios (ruido)')
     
     return trama_ruido
 
+
 if __name__ == "__main__":
     # main()
-    # Code below based on https://www.youtube.com/watch?v=nJYp3_X_p6c
+    # Code for socket connection below based on https://www.youtube.com/watch?v=nJYp3_X_p6c
+    # and the examples seen in class
     import socket
+    from pruebas import pruebas
     s = socket.socket()
 
         
@@ -91,19 +94,31 @@ if __name__ == "__main__":
     tests:list = []
     test_num = 10
 
-    for _ in range(test_num):
-        # Aplicar arquitectura de capas
-        # msg_input = input("Ingrese un mensaje a enviar: ")
-        msg_input = 'hola mundo'
-        trama = layer_implementation(msg_input)
+    num_exitos = 0
+    num_fracasos = 0
 
-        # Enviar trama por socket
-        s.send(trama.encode())
-        print('Trama enviada correctamente')
-        response = s.recv(1024).decode('utf-8')
-        print('response: ', response)
+    for i in range(1000):
+        for msg_input in pruebas:
+            # Aplicar arquitectura de capas
+            # msg_input = input("Ingrese un mensaje a enviar: ")
+            trama = layer_implementation(msg_input)
 
-        tests.append(response == msg_input)
+            # Enviar trama por socket
+            s.send(trama.encode())
+            # print('Trama enviada correctamente')
+            response = s.recv(1024).decode('utf-8')
+            # print('response: ', response)
+            if response == msg_input:
+                num_exitos += 1
+            else:
+                num_fracasos += 1
+
+        print(f'>{1000 * (i + 1)} pruebas realizadas')
+
+    print('Exitos:', num_exitos)
+    print('fracasos:', num_fracasos)
+    porcentaje = (num_exitos / 100000) * 100
+    print(f'precision: {porcentaje}%')
     s.close()
 
     print(tests)
