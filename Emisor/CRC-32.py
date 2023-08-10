@@ -62,7 +62,7 @@ def layer_implementation(msg_input) -> str:
         [u.char_to_extended_ascii_bits(char) for char in msg_input]
     )
 
-    # Capa de Enlace (hamming 7 4 implementation)
+    # Capa de Enlace 
     encoded_trama, encoded_print = CRC32(trama)
     
     # Capa de ruido
