@@ -106,12 +106,11 @@ server.on('connection', socket => {
     socket.on('data', data => {
         // print(`trama recibida: ${data}`)
 
-        // Capa de enlace:
+        // Capa de enlace: verificar integridad 
+
         const data_str = data.toString()
         let trama = process_trama(data_str)
-        trama = trama.map(sub => {
-            return [sub[2], sub[4], sub[5], sub[6]].reverse()
-        }).reverse()
+        
 
         // Capa de presentacion: Convertir a chars
         let ascii_chars = []
