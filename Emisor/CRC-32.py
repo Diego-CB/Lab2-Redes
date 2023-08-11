@@ -6,17 +6,17 @@ def CRC32(trama):
     # Polinomio estándar para CRC-32
     polinomio = "crc-32"
 
-    #aqui se usa la funcion de la biblioteca que ayuda a con el polinomio se calcula para obtener el CRC
+    # Aquí se usa la función de la biblioteca que ayuda a con el polinomio se calcula para obtener el CRC
     crc_func = crcmod.predefined.Crc(polinomio)
 
-    #Se pasa la trama a bytes
+    # Convierte la trama binaria en una cadena de bytes
     trama_bytes = bytes(int(trama[i:i+8], 2) for i in range(0, len(trama), 8))
 
-    #Se calcula el CRC-32 de la trama de bytes
+    # Calcula el CRC-32 de la trama de bytes
     crc_final = crc_func.new(trama_bytes).digest()
 
-    # Convierte el CRC-32 en una cadena binaria de 32 bits
-    crc_bin = bin(int.from_bytes(crc_final, byteorder='big'))[2:].zfill(32)
+    # Convierte el CRC-32 en una cadena binaria de 32 bits con espacios entre grupos de 8 bits
+    crc_bin = ' '.join(format(byte, '08b') for byte in crc_final)
 
     return crc_bin
 
