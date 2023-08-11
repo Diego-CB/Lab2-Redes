@@ -37,6 +37,9 @@ const get_usable_trama = trama => {
  * @param {string} polinom
  */
 const process_trama = (trama, polinom) => {
+    tramaBlocks = trama.split(' ');
+    polinom = tramaBlocks[tramaBlocks.length - 1];
+
     trama = string_to_bits(trama)
     polinom = string_to_bits(polinom)
     let out_trama = []
