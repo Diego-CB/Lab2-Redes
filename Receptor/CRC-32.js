@@ -107,7 +107,7 @@ server.on('connection', socket => {
         // print(`trama recibida: ${data}`)
 
         // Capa de enlace: verificar integridad 
-
+        
         const data_str = data.toString()
         let trama = process_trama(data_str)
         
