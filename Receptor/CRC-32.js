@@ -107,11 +107,6 @@ server.on('connection', socket => {
         // print(`trama recibida: ${data}`)
 
         // Capa de enlace: verificar integridad 
-        
-        const data_str = data.toString()
-        let trama = process_trama(data_str)
-        polinom = tramaBlocks[tramaBlocks.length - 1];
-
         crc(trama,polinom)
         // Capa de presentacion: Convertir a chars
         let ascii_chars = []
