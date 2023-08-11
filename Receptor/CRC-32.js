@@ -1,4 +1,4 @@
-const { string_to_bits, print, binaryToString } = require('./util')
+const { string_to_bits, print, binaryToString } = require('./util.js')
 
 
 /**
