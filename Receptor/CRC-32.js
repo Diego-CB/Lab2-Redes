@@ -1,4 +1,3 @@
-require('slice')
 const { string_to_bits, print, binaryToString } = require('./util')
 
 

@@ -63,7 +63,7 @@ def layer_implementation(msg_input) -> str:
     )
 
     # Capa de Enlace 
-    encoded_trama, encoded_print = CRC32(trama)
+    encoded_trama = CRC32(trama)
     
     # Capa de ruido
     trama_ruido, cambios = u.add_ruido(encoded_trama)
