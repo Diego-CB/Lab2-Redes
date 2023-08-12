@@ -69,7 +69,7 @@ def layer_implementation(msg_input) -> str:
     trama_ruido, cambios = u.add_ruido(encoded_trama)
     # print('> se hicieron', cambios, 'cambios (ruido)')
     
-    return trama_ruido 
+    return trama_ruido, cambios 
 
 if __name__ == "__main__":
     # Code for socket connection below based on https://www.youtube.com/watch?v=nJYp3_X_p6c
@@ -92,7 +92,7 @@ if __name__ == "__main__":
         for msg_input in pruebas:
             # Aplicar arquitectura de capas
             # msg_input = input("Ingrese un mensaje a enviar: ")
-            trama = layer_implementation(msg_input)
+            trama, cambios = layer_implementation(msg_input)
 
             # Enviar trama por socket
             s.send(trama.encode())
@@ -101,7 +101,7 @@ if __name__ == "__main__":
             # print(response)
             # print(msg_input)
             # print('response: ', response)
-            if response == "1":
+            if response == "1" and cambios != 0 :
                 num_exitos += 1
             else:
                 num_fracasos += 1
