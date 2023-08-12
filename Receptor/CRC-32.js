@@ -60,6 +60,9 @@ const process_trama = (trama, polinom) => {
         }
 
         result = get_usable_trama(result)
+        if (result[0].length === 0){
+            return true
+        }
 
         out_trama = [...out_trama, ...result[0]]
         operate_trama = result[1]
@@ -72,6 +75,7 @@ const process_trama = (trama, polinom) => {
         while (operate_trama.length < polinom.length && trama.length > 0) {
             operate_trama.push(trama.pop())
         }
+
     }
 
     errors_founded = out_trama.includes(1)
@@ -80,13 +84,15 @@ const process_trama = (trama, polinom) => {
 }
 
 const crc = (trama, polinom) => {
-    console.log('Trama inicial:', trama)
+    // console.log('Trama inicial:', trama)
     const founded_errors = process_trama(trama, polinom)
     if (founded_errors) {
-        console.log('> Se encontraron errores en la trama')
-        console.log('> La trama se descarta')
+        // console.log('> Se encontraron errores en la trama')
+        // console.log('> La trama se descarta')
+        return '0'
     } else {
-        console.log('> No se encontraron errores en la trama')
+        // console.log('> No se encontraron errores en la trama')
+        return '1'
     }
 }
 
@@ -105,26 +111,17 @@ server.on('connection', socket => {
     print('> conexion a socket iniciada')
     socket.on('data', data => {
         // print(`trama recibida: ${data}`)
-
+        // print(`trama recibida: ${data.toString()}`)
+        let trama =  data.toString()
+        polinom = 1101
+        trama = trama.replace(' ', '')
+        trama = trama.replace(' ', '')
+        trama = trama.replace(' ', '')
         // Capa de enlace: verificar integridad 
-        crc(trama,polinom)
-        // Capa de presentacion: Convertir a chars
-        let ascii_chars = []
-        
-        for (let index = 0; index < trama.length; index += 2) {
-            ascii_chars.push([...trama[index], ...trama[index+1]])
-        }
-
-        let chars = ascii_chars.map(ascii => ascii.reduce(
-            (acc, va) => acc.toString() + va.toString()),
-            ''
-        )
-        chars = chars.map(ascii => binaryToString(ascii))
-        chars = chars.reduce((acc, val) => acc + val, '')
-
+        let result = crc(trama,polinom)
         // Capa de presentacion: Imprimir mensaje y devolver resultado
         // console.log('recibido: ', chars)
-        socket.write(chars)
+        socket.write(result)
     })
 
     socket.on('close', () => {
