@@ -113,7 +113,10 @@ server.on('connection', socket => {
         // print(`trama recibida: ${data}`)
         // print(`trama recibida: ${data.toString()}`)
         let trama =  data.toString()
-        polinom = 1101
+        const tramaBlocks = trama.split(' ');
+        const polinom = tramaBlocks[tramaBlocks.length - 1];
+        // const polinom = "100000100110000010001110110110111";
+
         trama = trama.replace(' ', '')
         trama = trama.replace(' ', '')
         trama = trama.replace(' ', '')

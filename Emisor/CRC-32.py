@@ -98,8 +98,10 @@ if __name__ == "__main__":
             s.send(trama.encode())
             # print('Trama enviada correctamente')
             response = s.recv(1024).decode('utf-8')
+            # print(response)
+            # print(msg_input)
             # print('response: ', response)
-            if response == msg_input:
+            if response == "1":
                 num_exitos += 1
             else:
                 num_fracasos += 1
